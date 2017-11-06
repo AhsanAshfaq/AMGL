@@ -1,0 +1,18 @@
+<odoo>
+  <data>
+      <record id="form_reject_approve_button" model="ir.ui.view">
+        <field name="inherit_id" ref="amgl.form_metal_movement"/>
+        <field name="model">amgl.metal_movement</field>
+        <field name="arch" type="xml">
+          <!-- Add a header with button to the existing view -->
+          <xpath expr="//sheet" position="before">
+              <header>
+                  <field name="current_user" invisible="1"/>
+                  <button name="update_approve" attrs="{'invisible':[('current_user', '=', False)]}" string="Approve" type="object" class="oe_highlight"/>
+                  <button name="update_reject" attrs="{'invisible':[('current_user', '=', False)]}" string="Reject" type="object" class="btn-danger"/>
+              </header>
+          </xpath>
+        </field>
+      </record>
+  </data>
+</odoo>

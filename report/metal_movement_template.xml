@@ -1,0 +1,167 @@
+<odoo>
+    <template id="report_metalmovement">
+        <t t-call="report.html_container">
+            <t t-call="report.external_layout">
+                <div class="page">
+                    <div class="oe_structure"/>
+                    <div class="row">
+                        <div class="col-xs-5 col-xs-offset-7">
+                            <div t-field="user.partner_id" t-options="{&quot;widget&quot;: &quot;contact&quot;, &quot;fields&quot;: [&quot;address&quot;, &quot;name&quot;], &quot;no_marker&quot;: True}"/>
+                        </div>
+                    </div>
+                    <img src="https://9bfb164cc130fa80219f-0951aea74e48cd703ee2eb5ca90acd24.ssl.cf1.rackcdn.com/zn_logo.png"/>
+                    <h2 style="text-align:center;">Metal Movement Request</h2>
+                    <t t-foreach="docs" t-as="o">
+                        <div class="col-md-12" style="margin-top:50px;">
+                            <div class="col-md-6" style="float:left">
+                                                               Date : <span t-field="o.date_create" t-field-options='{"format": "d MMMM y"}'/>
+                            </div>
+                            <div class="col-md-6" style="float:right">
+                                                                Reference : <span t-field="o.reference"/>
+                            </div>
+                        </div>
+                        <div class="col-md-12" style="margin-top:50px;">
+                            <div class="col-md-4" style="float:left">
+                                <span style="font-weight:bold;font-size:15px;">Metal Movement Type:</span>
+                                <p t-field="o.metal_movement_type"/>
+                            </div>
+                            <div class="col-md-4" style="float:left;margin-left:50px;">
+                                <span style="font-weight:bold;font-size:15px;">Move Metal From:</span>
+                                <br/>
+                                                                Custodian : <span t-field="o.custodian.name"/>
+                                <br/>
+                                                                Name : <span t-field="o.mmf_name"/>
+                                <br/>
+                                                                Account # : <span t-field="o.mmf_account_number"/>
+                                <br/>
+                                                                Account Type : <span t-field="o.mmf_account_type"/>
+                            </div>
+                            <div class="col-md-4" style="float:left;margin-left:50px;">
+                                <span style="font-weight:bold;font-size:15px;">Move Metal To:</span>
+                                <br/>
+                                                                Name : <span t-field="o.mmt_name"/>
+                                <br/>
+                                                                Address : <span t-field="o.mmt_address"/>
+                                <br/>
+                                                                Account (if applicable) : <span t-field="o.mmt_account_number"/>
+                            </div>
+                            <div style="clear:both;"/>
+                            <br/>
+                            <div class="col-md-12" style="margin-top:40px;">
+                                <div class="col-md-6" style="float:left">
+                                      <h4>AMGL HQ Authorization</h4>
+                                    <br />
+                                     First Approved By : <span t-field="o.first_approve.name"/>
+                                    <br />
+                                    Second Approved By : <span t-field="o.second_approve.name"/>
+                                </div>
+                                <div class="col-md-6" style="float:left;margin-left:30px;">
+                                    Special Instruction : <span t-field="o.sepcial_instruction"/>
+                                </div>
+                            </div>
+                            <div style="clear:both;"/>
+                            <br/>
+                            <hr style="border-top: dotted 1px;"/>
+                            <t t-if="o.order_lines">
+                                <h3>Metals To Be Moved</h3>
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th class="text-left">
+                                                <strong>Quantity</strong>
+                                            </th>
+                                            <th class="text-left">
+                                                <strong>Weight</strong>
+                                            </th>
+                                            <th class="text-left">
+                                                <strong>Hallmark and Product Details</strong>
+                                            </th>
+                                            <th class="text-left">
+                                                <strong>Total Weight</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-set="total_gold" t-value="0"/>
+                                        <t t-set="total_silver" t-value="0"/>
+                                        <t t-set="total_platinum" t-value="0"/>
+                                        <t t-set="total_palladium" t-value="0"/>
+                                        <t t-set="total" t-value="0"/>
+                                        <tr t-foreach="o.order_lines" t-as="line_ids">
+                                            <t t-foreach="line_ids.products" t-as="product">
+
+                                                <t t-if="(product.Type == 'Gold')">
+                                                <t t-set="total_gold" t-value="total_gold+line_ids.quantity"/>
+                                                </t>
+                                                <t t-if="(product.Type == 'Silver')">
+                                                <t t-set="total_silver" t-value="total_silver+line_ids.quantity"/>
+                                                </t>
+                                                <t t-if="(product.Type == 'Platinum')">
+                                                <t t-set="total_platinum" t-value="total_platinum+line_ids.quantity"/>
+                                                </t>
+                                                <t t-if="(product.Type == 'Palladium')">
+                                                <t t-set="total_palladium" t-value="total_palladium+line_ids.quantity"/>
+                                                </t>
+                                            </t>
+
+                                            <td>
+                                                <span t-field="line_ids.quantity"/>
+                                            </td>
+                                            <t>
+                                                <td class="text-left">
+                                                    <span t-field="line_ids.weight"/>
+                                                </td>
+                                            </t>
+                                            <td class="text-left">
+                                                <span t-field="line_ids.products"/>
+                                            </td>
+                                            <td class="text-left">
+                                                <span t-field="line_ids.total_weight"/>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <div class="col-md-12" style="margin-top:50px;">
+                                <div class="col-md-6" style="float:left">
+                                    <h4>Vault Confirmations</h4> <br />
+                                    <p style="width: 500px; display: table;">
+                                        <div style="float:left;">
+                                        <label style="display:block">Complete By:</label>
+                                        <hr  style="width:100px;margin-left:80px;"/>
+                                        </div>
+                                        <div style="margin-left:200px">
+                                        <label style="display:block;">Date:</label>
+                                        <hr  style="width:100px;margin-left:40px;"/>
+                                        </div>
+                                        <div style="float:left;">
+                                        <label style="display:block">Reviewed By:</label>
+                                        <hr  style="width:100px;margin-left:80px;"/>
+                                        </div>
+                                        <div style="margin-left:200px">
+                                        <label style="display:block;">Date:</label>
+                                        <hr  style="width:100px;margin-left:40px;"/>
+                                        </div>
+                                    </p>
+                                </div>
+                            </div>
+                            </t>
+                            <div class="col-md-6" style="float:right">
+                                    Total Gold : <span t-esc="o.total_gold"></span>
+                                    <br />
+
+                                    Total Silver : <span t-esc="o.total_silver"></span>
+                                    <br />
+                                    Total Platinum : <span t-esc="o.total_platinum"></span>
+                                    <br />
+                                    Total Palladium : <span t-esc="o.total_palladium"></span>
+                                    <br />
+                                    Grand Total : <span t-esc="o.total"></span>
+                                </div>
+                        </div>
+                    </t>
+                    <div class="oe_structure"/>
+                </div>
+            </t>
+        </t>
+    </template>
+</odoo>

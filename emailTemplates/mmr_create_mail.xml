@@ -1,0 +1,97 @@
+<odoo>
+    <data>
+         <record id="create_mmr_email" model="mail.template">
+            <field name="name">New Metal Movement Request</field>
+            <field name="model_id" ref="base.model_res_users"/>
+            <field name="email_from">ahsan.a@allshoreresources.com</field>
+            <field name="email_to">${object.email|safe}</field>
+            <field name="subject">${user.env.context.get('mmr_name')}</field>
+            <field name="body_html"><![CDATA[
+<div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
+    <table cellspacing="0" cellpadding="0" style="width:600px;border-collapse:collapse;background:inherit;color:inherit">
+        <tbody><tr>
+            <td valign="center" width="200" style="padding:10px 10px 10px 5px;font-size: 12px">
+                <img src="http://amark.com/content/images/logo.png" style="padding: 0px; margin: 0px; height: auto; width: 80px;" alt="${user.company_id.name}">
+            </td>
+        </tr></tbody>
+    </table>
+</div>
+<div style="padding:0px;width:600px;margin:auto;background: #FFFFFF repeat top /100%;color:#777777">
+    <p>Dear ${object.name},</p>
+    <p>A new metal movement request is generated and assigned to you for approval.</p>
+    <p>Please see below metal movement request details</p>
+
+    <div>
+    <p><strong>Metal Movement Request Detail :</strong></p>
+<table style="height: 183px;border-collapse: collapse; border: 1px solid black;color:black !important;">
+<tbody>
+<tr>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Date</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('date')}</td>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Reference</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('ref')}</td>
+</tr>
+<tr>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>First Approver</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('fapprove')}</td>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Second Approver</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('sapprove')}</td>
+</tr>
+<tr>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Customer</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('customer')}</td>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Custodian</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('custodian')}</td>
+</tr>
+<tr>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Metal Movement Type</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('mmt')}</td>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Metal Movement From(Name)</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('mmf_name')}</td>
+</tr>
+<tr>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Metal Movement From(Account)</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('mmf_accountnumber')}</td>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Metal Movement From(Account Type)</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('mmf_accounttype')}</td>
+</tr>
+<tr>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Metal Movement To(Name)</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('mmt_name')}</td>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Metal Movement To(Address)</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('mmt_address')}</td>
+</tr>
+<tr>
+<td style="border-collapse: collapse; border: 1px solid black;"><strong>Metal Movement To(Account)</strong></td>
+<td style="border-collapse: collapse; border: 1px solid black;">${user.env.context.get('mmt_account')}</td>
+<td>&nbsp;</td>
+<td>&nbsp;</td>
+</tr>
+</tbody>
+</table>
+    </div>
+<br />
+<br />
+
+    <span>
+        <a href="${user.env.context.get('mmr_link')}" style="padding: 5px 10px; font-size: 12px; line-height: 18px; color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: Green; border: 1px solid #875A7B; border-radius:3px">Approve</a>
+    </span>
+
+
+    <span>
+        <a href="${user.env.context.get('mmr_link')}" style="padding: 5px 10px; font-size: 12px; line-height: 18px; color: #FFFFFF; border-color:#875A7B; text-decoration: none; display: inline-block; margin-bottom: 0px; font-weight: 400; text-align: center; vertical-align: middle; cursor: pointer; white-space: nowrap; background-image: none; background-color: Red; border: 1px solid #875A7B; border-radius:3px">Reject</a>
+    </span>
+
+    <p>If you do not expect this, you can safely ignore this email.</p>
+    <p>Best regards,</p>
+</div>
+<div style="padding:0px;width:600px;margin:auto; margin-top: 10px; background: #fff repeat top /100%;color:#777777">
+    ${user.signature | safe}
+    <p style="font-size: 11px; margin-top: 10px;">
+        <strong>Sent by ${user.company_id.name} using <a href="www.odoo.com" style="text-decoration:none; color: #875A7B;">Odoo</a></strong>
+    </p>
+</div>]]></field>
+            <field name="user_signature" eval="False"/>
+        </record>
+    </data>
+</odoo>

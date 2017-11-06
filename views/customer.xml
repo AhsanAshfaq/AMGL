@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+
+        <record id="amgl.customer_search" model="ir.ui.view">
+            <field name="name">Search Customer</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <search string="Search Customers">
+                    <field name="first_name" string="First Name" domain="[('first_name','ilike',self.first_name)]"/>
+                    <field name="last_name" string="Last Name" domain="[('last_name','ilike',self.last_name)]"/>
+                    <field name="account_number" string="Account Number" domain="[('account_number','ilike',self.account_number)]"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="amgl.customer_form" model="ir.ui.view">
+            <field name="name">Customer</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <form string="Create New Customer" duplicate="0">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="first_name" />
+                                <field name="last_name" />
+                                <field name="account_number" />
+                            </group>
+                            <group>
+                                <field name="date_opened" />
+                                <field name="account_type" />
+                                <field name="custodian_id" />
+                            </group>
+                        </group>
+                        <group  class="col-4">
+                            <button style="font-size: 18px;font-weight: bolder;" class="oe_highlight" name="redirect_to_order" groups="amgl.group_amark_admins,amgl.group_amark_custodian,amgl.group_amark_sub_admins" string="Add Expecting Inventory" type="object" />
+                            <button style="font-size: 18px;font-weight: bolder;margin-left: -300px;" class="oe_highlight" name="add_deposit_action" groups="amgl.group_amark_admins,amgl.group_amark_vault" string="Add Deposit" type="object" />
+                        </group>
+                        <group>
+                            <field  domain="[('state','in',['expecting','pending'])]" name="customer_orders" default_order='state desc' options="{'limit': 5}" string="Pending Or Expecting" create="false" edit="false">
+                                <tree decoration-bf ="state in ('expecting','pending','completed')" decoration-info="state=='expecting'" decoration-danger="state=='pending'" decoration-success="state=='completed'" create="false" edit="false">
+                                    <field name="name" />
+                                    <field name="related_products" />
+                                    <field name="customer_id" />
+                                    <field name="related_remaining_quantity" string="Total Expecting" />
+                                    <field name="related_total_received_qty" />
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                            <field name="customer_orders_2" domain="[('state','=','completed')]" default_order='state desc' options="{'limit': 5}" string="Completed" create="false" edit="false">
+                                <tree decoration-bf ="state in ('expecting','pending','completed')" decoration-info="state=='expecting'" decoration-danger="state=='pending'" decoration-success="state=='completed'" create="false" edit="false">
+                                    <field name="name" />
+                                    <field name="related_products" />
+                                    <field name="customer_id" />
+                                    <field name="related_remaining_quantity" string="Total Expecting" />
+                                    <field name="related_total_received_qty" />
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        <group  class="col-4 oe_subtotal_footer oe_right" style="text-align:left;" name="total">
+                            <field name="total_gold" widget="monetary" />
+                            <field name="total_silver" widget="monetary" />
+                            <field name="total_platinum" widget="monetary" />
+                            <field name="total_palladium" widget="monetary" />
+                            <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                <label for="total" />
+                            </div>
+                            <field name="total" string="Grand Total" nolabel="1" class="oe_subtotal_footer_separator" widget="monetary" />
+                        </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="amgl.customer_tree" model="ir.ui.view">
+            <field name="name">Create New Customer</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <tree string="Create New Customer" duplicate="0">
+                    <field name="user_id" invisible="1"/>
+                    <field name="first_name" />
+                    <field name="last_name" />
+                    <field name="account_number" />
+                    <field name="date_opened" />
+                    <field name="custodian_id"/>
+                    <field name="account_type" />
+                </tree>
+            </field>
+        </record>
+        <record id="amgl.customer_kanban" model="ir.ui.view">
+            <field name="name">Customer Kanban</field>
+            <field name="model">amgl.customer</field>
+            <field name="arch" type="xml">
+                <kanban default_group_by="account_type">
+                    <field name="first_name" />
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_product_vignette" style="height:90px;background-color:beige;border: 1px solid black;padding: 15px;">
+                                <div>
+                                    <strong>Name :</strong>
+                                    <field name="first_name" />
+                                    <field name="last_name" />
+                                </div>
+                                <div>
+                                    <strong>Account Number :</strong>
+                                    <field name="account_number" />
+                                </div>
+                                <div style="float:right;margin-top:10px;">
+                                    <strong>Number of inventories :</strong>
+                                    <field name="number_of_orders" />
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,23 @@
+<odoo>
+    <data>
+
+        <record id="amgl.order_line_receive_form" model="ir.ui.view">
+            <field name="name">Order receive</field>
+            <field name="model">amgl.order_line</field>
+            <field name="arch" type="xml">
+                <tree string="Receive Inventory" editable="bottom" duplicate="0">
+                    <field name="products"/>
+                    <field name="commodity"/>
+                    <field name="quantity" string="Expecting" colspan="3"/>
+                    <field name="weight"/>
+                    <field name="total_weight"/>
+                    <field name="received_quantity" string="Received" colspan="2"/>
+                    <field name="received_weight"/>
+                    <field name="remaining_quantity" string="Remaining" colspan="2"/>
+                    <field name="remaining_weight"/>
+                </tree>
+            </field>
+        </record>
+
+    </data>
+</odoo>

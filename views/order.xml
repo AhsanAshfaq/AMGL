@@ -1,0 +1,224 @@
+<odoo>
+    <data>
+        <record id="amgl.order_form" model="ir.ui.view">
+            <field name="name">Add Expecting Inventory</field>
+            <field name="model">amgl.order</field>
+            <field name="context">{'is_deposit': is_deposit}</field>
+            <field name="arch" type="xml">
+                <form string="Expecting Inventory" duplicate="0">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="custodian_id" string="Custodian"/>
+                            <field name="customer_id"/>
+                            <field name="account_number"/>
+                            <field name="is_deposit" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="account_type"/>
+                            <field name="date_opened" invisible="1"/>
+                            <field name="date_received" attrs="{'invisible': [('is_deposit','=',True)]}" groups="amgl.group_amark_vault"/>
+                            <field name="dealer_id" options="{'create': false, 'create_edit': false}"/>
+                        </group>
+                        </group>
+                        <notebook id="expecting-notebook">
+                            <page string="Lines">
+                                <field name="order_line" options="{'limit': 5}" mode="tree,kanban">
+                                    <form string="Expecting Inventory Lines">
+                                        <group>
+                                            <field name="products" />
+                                            <field name="commodity"/>
+                                            <field name="quantity"  string="Total Expected" col_border="1" colspan="2"/>
+                                            <field name="total_weight" col_border="1" string="Total Weight" />
+                                            <field name="received_quantity" col_border="1"  string="Total Received" colspan="2" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                            <field name="received_weight" col_border="1"   string="Weight" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                            <field name="remaining_quantity" col_border="1" string="Total Remaining" colspan="2" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                            <field name="remaining_weight"  col_border="1" string="Weight" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                            <field name="temp_received_quantity" class="oe_edit_only" col_border="1" colspan="2" string="Received"  groups="amgl.group_amark_admins,amgl.group_amark_vault"/>
+                                            <field name="temp_received_weight" class="oe_edit_only" col_border="1" groups="amgl.group_amark_admins,amgl.group_amark_vault"/>
+                                        </group>
+                                    </form>
+                                    <tree string="Expecting Inventory Lines" data-id="expecting"  editable="bottom" >
+                                        <field name="products" />
+                                        <field name="commodity"/>
+                                        <field name="quantity"  string="Total Expected" col_border="1" colspan="2"/>
+                                        <field name="total_weight" col_border="1" string="Total Weight" />
+                                        <field name="received_quantity" col_border="1"  string="Total Received" colspan="2" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                        <field name="received_weight" col_border="1"   string="Weight" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                        <field name="remaining_quantity" col_border="1" string="Total Remaining" colspan="2" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                        <field name="remaining_weight"  col_border="1" string="Weight" groups="amgl.group_amark_admins,amgl.group_amark_vault" />
+                                        <field name="temp_received_quantity" class="oe_edit_only" col_border="1" colspan="2" string="Received"  groups="amgl.group_amark_admins,amgl.group_amark_vault"/>
+                                        <field name="temp_received_weight" class="oe_edit_only" col_border="1" groups="amgl.group_amark_admins,amgl.group_amark_vault"/>
+                                    </tree>
+                                </field>
+                                <group style="text-align:left;" class="oe_subtotal_footer oe_right" colspan="2" string="Total Weight" name="total_by_commodity">
+                                    <field name="gold_weight" widget='monetary' />
+                                    <field name="silver_weight" widget='monetary' />
+                                    <field name="platinum_weight" widget='monetary' />
+                                    <field name="palladium_weight" widget='monetary' />
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="total_weight" />
+                                    </div>
+                                    <field name="total_weight" string="Grand Total Weight" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                                </group>
+                                <group  style="text-align:left;margin-right: 50px;" class="oe_subtotal_footer oe_right" colspan="2" name="total_by_commodity" string="Total Pieces">
+                                    <field name="total_by_gold" widget='monetary' />
+                                    <field name="total_by_silver" widget='monetary' />
+                                    <field name="total_by_platinum" widget='monetary' />
+                                    <field name="total_by_palladium" widget='monetary' />
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="total_by_commodity" />
+                                    </div>
+                                    <field name="total_by_commodity" string="Grand Total Pieces"  nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                                </group>
+                            </page>
+                            <page string="Inventory Receive History"  attrs="{'invisible': [('is_deposit','=',True)]}"  create="false" edit="false">
+                                <field name="order_history" create="false" edit="false">
+                                    <tree string="Inventory Receive History" attrs="{'invisible': [('is_deposit','=',True)]}"  create="false" edit="false">
+                                        <field name="date_create" string="Date Received"/>
+                                        <field name="received_quantity" string="Received Quantity"/>
+                                        <field name="updated_by" string="Received By"/>
+                                    </tree>
+                                    <form attrs="{'invisible': [('is_deposit','=',True)]}" >
+                                        <sheet>
+                                            <group>
+                                                <field name="date_create" string="Date Received"/>
+                                                <field name="received_quantity" string="Received Quantity"/>
+                                                <field name="updated_by" string="Received By"/>
+                                            </group>
+                                            <group>
+                                                <field name="fields_updated"/>
+                                                <field name="remaining_quantity"/>
+                                                <field name="order_id"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="amgl.order_deposit_form" model="ir.ui.view">
+            <field name="name">Add Deposit</field>
+            <field name="model">amgl.order</field>
+            <field name="context">{'is_deposit': is_deposit}</field>
+            <field name="arch" type="xml">
+                <form string="Add Deposit" duplicate="0">
+                    <sheet>
+                        <group>
+                        <group>
+                            <field name="custodian_id" string="Custodian"/>
+                            <field name="customer_id"/>
+                            <field name="account_number"/>
+                            <field name="is_deposit" invisible="1"/>
+                            <field name="show_footer" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="account_type"/>
+                            <field name="date_opened" invisible="1"/>
+                            <field name="date_received" attrs="{'invisible': [('is_deposit','=',True)]}" groups="amgl.group_amark_vault"/>
+                            <field name="dealer_id" options="{'create': false, 'create_edit': false}"/>
+                        </group>
+                        </group>
+                        <notebook id="expecting-notebook">
+                            <page string="Lines">
+                                <field name="order_line" options="{'limit': 5}" mode="tree,kanban">
+                                    <form string="Expecting Inventory Lines">
+                                        <group>
+                                            <field name="products"/>
+                                            <field name="commodity"/>
+                                            <field name="temp_received_quantity"/>
+                                            <field name="temp_received_weight" />
+                                        </group>
+                                    </form>
+                                    <tree string="Expecting Inventory Lines" data-id="expecting"  editable="bottom" >
+                                        <field name="products" subheading=""/>
+                                        <field name="commodity" subheading=""/>
+                                        <field name="temp_received_quantity" class="oe_edit_only" col_border="1" colspan="2" string="Received"  groups="amgl.group_amark_admins,amgl.group_amark_vault"/>
+                                        <field name="temp_received_weight" class="oe_edit_only" col_border="1" groups="amgl.group_amark_admins,amgl.group_amark_vault"/>
+                                    </tree>
+                                </field>
+                                <group style="text-align:left;" class="oe_subtotal_footer oe_right" colspan="2" string="Total Weight" name="total_by_commodity">
+                                    <field name="gold_weight" widget='monetary' />
+                                    <field name="silver_weight" widget='monetary' />
+                                    <field name="platinum_weight" widget='monetary' />
+                                    <field name="palladium_weight" widget='monetary' />
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="total_weight" />
+                                    </div>
+                                    <field name="total_weight" string="Grand Total Weight" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                                </group>
+                                <group  style="text-align:left;margin-right: 50px;" class="oe_subtotal_footer oe_right" colspan="2" name="total_by_commodity" string="Total Pieces">
+                                    <field name="total_by_gold" widget='monetary' />
+                                    <field name="total_by_silver" widget='monetary' />
+                                    <field name="total_by_platinum" widget='monetary' />
+                                    <field name="total_by_palladium" widget='monetary' />
+                                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                        <label for="total_by_commodity" />
+                                    </div>
+                                    <field name="total_by_commodity" string="Grand Total Pieces"  nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                                </group>
+                            </page>
+                            <page string="Inventory Receive History"  attrs="{'invisible': [('is_deposit','=',True)]}"  create="false" edit="false">
+                                <field name="order_history" create="false" edit="false">
+                                    <tree string="Inventory Receive History" attrs="{'invisible': [('is_deposit','=',True)]}"  create="false" edit="false">
+                                        <field name="date_create" string="Date Received"/>
+                                        <field name="received_quantity" string="Received Quantity"/>
+                                        <field name="updated_by" string="Received By"/>
+                                    </tree>
+                                    <form attrs="{'invisible': [('is_deposit','=',True)]}" >
+                                        <sheet>
+                                            <group>
+                                                <field name="date_create" string="Date Received"/>
+                                                <field name="received_quantity" string="Received Quantity"/>
+                                                <field name="updated_by" string="Received By"/>
+                                            </group>
+                                            <group>
+                                                <field name="fields_updated"/>
+                                                <field name="remaining_quantity"/>
+                                                <field name="order_id"/>
+                                            </group>
+                                        </sheet>
+                                    </form>
+                                </field>
+                            </page>
+                        </notebook>
+                        <group attrs="{'invisible' :['&amp;' , ('is_deposit','=',False), ('show_footer','=',False)]}">
+                            <footer>
+                                <button name="create_deposit" class="btn btn-default oe_highlight" string="Create Deposit" type="object" />
+                                <button special="cancel" class="btn btn-default btn-sm o_form_button_cancel" string="Cancel" type="object" />
+                            </footer>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="expectinginventory_treeview" model="ir.ui.view">
+            <field name="name">Inventories List</field>
+            <field name="model">amgl.order</field>
+            <field name="view_mode">tree</field>
+            <field name= "arch" type = "xml">
+                <tree string="Inventories" create="false" duplicate="0" editable="top" default_order="write_date desc">
+                    <field name="customer_id" string="Name"/>
+                    <field name="date_opened" string="Date Opened" invisible="1"/>
+                    <field name="related_products" string="Product" readonly="1"/>
+                    <field name="related_remaining_quantity" string="Total Expecting"/>
+                    <field name="total_qty" invisible="1"/>
+                    <field name="related_total_received_qty" string="Total Received" readonly="1"/>
+                    <field name="current_received_quantity"  string="Quantity Received"/>
+                </tree>
+            </field>
+        </record>
+        <record id="amgl.order_search" model="ir.ui.view">
+            <field name="name">Expecting Inventory Search</field>
+            <field name="model">amgl.order</field>
+            <field name="arch" type="xml">
+                <search string="">
+                    <filter name="group_customer_id" string="Group By Customer" icon="terp-partner" context="{'group_by':'customer_id'}"/>
+                </search>
+            </field>
+        </record>
+    </data>
+</odoo>

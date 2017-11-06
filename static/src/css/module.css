@@ -1,0 +1,21 @@
+.o_list_number {
+    text-align: right !important;
+}
+.openerp .oe_list_content td.oe_number{
+    text-align: left !important;
+}
+.o_form_view .o_group.o_inner_group.oe_subtotal_footer > tbody > tr > td.o_td_label{
+    text-align: left !important;
+}
+.o_form_view .o_group.o_inner_group.oe_subtotal_footer .oe_subtotal_footer_separator{
+    text-align: left !important;
+}
+.o_list_view table > thead > th{
+    text-align:left !important;
+}
+.text-center{
+    text-align:left !important;
+}
+.border-bottom{
+    border-bottom: 1px solid black !important;
+}

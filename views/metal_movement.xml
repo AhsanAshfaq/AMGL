@@ -1,0 +1,80 @@
+<odoo>
+    <data>
+        <record id="action_metal_movement" model="ir.actions.act_window">
+            <field name="name">Metal Movement Request</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">amgl.metal_movement</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create
+              </p><p>
+                <!-- More details about what a user can do with this object will be OK -->
+              </p>
+            </field>
+        </record>
+        <record id="form_metal_movement" model="ir.ui.view">
+            <field name="name">Metal Movement Request </field>
+            <field name="model">amgl.metal_movement</field>
+            <field name="arch" type="xml">
+                <form string="Metal Movement" duplicate="0">
+                    <sheet>
+						<group>
+                        <group string="Metal Movement Request">
+                            <field name="date_create" string="Date Created"/>
+                            <field name="reference"/>
+                            <field name="metal_movement_type"/>
+                            <field name="first_approve"/>
+                            <field name="second_approve" domain="[('id', '!=', first_approve)]"/>
+                            <field name="customer" on_change="on_change_customer(customer)"/>
+                            <field name="sepcial_instruction" widget="html"/>
+                        </group>
+                        <group string="Metal Movement From">
+							<group colspan="6">
+								<field name="custodian"/>
+								<field name="mmf_name"/>
+								<field name="mmf_account_number"/>
+								<field name="mmf_account_type"/>
+							</group>
+							<group string="Metal Movement To" colspan="6">
+								<field name="mmt_name"/>
+								<field name="mmt_address" attrs="{'invisible':[('metal_movement_type', '=', 'IT')]}"/>
+								<field name="mmt_account_number" />
+								<field name="mmt_company" attrs="{'invisible':[('metal_movement_type','not in',('AC','IPPU','IT'))]}"/>
+								<field name="pickup_date" string="Pick up Datetime" attrs="{'invisible':[('metal_movement_type','not in',('AC','IPPU'))]}"/>
+							</group>
+                        </group>
+                        <group string="Metals To Be Moved"  colspan="12">
+                            <field name="order_lines">
+                                <tree editable="bottom">
+                                    <field name="quantity" string="Quantity"/>
+                                    <field name="products" domain="[('customer_ids','in', parent.customer)]" string="Product Name"/>
+                                    <field name="weight" string="Weight"/>
+                                    <field name="total_weight" string="Total Weight"/>
+                                </tree>
+                            </field>
+                        </group>
+						</group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="tree_metal_movement" model="ir.ui.view">
+            <field name="name">Metal Movement</field>
+            <field name="model">amgl.metal_movement</field>
+            <field name="arch" type="xml">
+                <tree string="Metal Movement Request" duplicate="0">
+                    <field name="metal_movement_type" string="Metla MovementType"/>
+                    <field name="first_approve"/>
+                    <field name="is_first_approve" string="Approved By First Approver"/>
+                    <field name="second_approve"/>
+                    <field name="is_second_approve" string="Approved By Second Approver"/>
+                    <field name="is_complete" string="Approval Complete"/>
+                    <field name="reference" string="Reference#"/>
+                    <field name="date_create" string="Date Created"/>
+                    <field name="customer" string="Customer"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+</odoo>
